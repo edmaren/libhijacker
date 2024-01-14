@@ -141,16 +141,16 @@ void DoPatch_Bloodborne109(pid_t app_pid, uint64_t text_base)
 	write_bytes(app_pid, NO_ASLR(0x02715d78), "90");
 	write_bytes(app_pid, NO_ASLR(0x020367c7), "488d351cd2c702");
 	write_bytes(app_pid, NO_ASLR(0x020369e8), "488d35b5cfc702");
-	write_wstring(app_pid, NO_ASLR(0x04cb39ea), L"This 60fps patch was");
-	write_wstring(app_pid, NO_ASLR(0x04cb39a4), L"Made with love, by Lance McDonald");
+	write_wstring(app_pid, NO_ASLR(0x04cb39ea), L"60 fps patch");
+	write_wstring(app_pid, NO_ASLR(0x04cb39a4), L"v1.09");
 	// Patch DLC Save Requirement
 	write_bytes(app_pid, NO_ASLR(0x023b67b3), "49c7460801010101"); // <!-- with `SPDLCMESSENGER00` [0] +`SPDLCMESSENGER01` [1] +`SPEXPANSIONDLC03` [3] but [2] is 0 but lets unlock it anyways -->
 	// yoink `assert()`
 	write_bytes(app_pid, NO_ASLR(0x02fbf178), "4831c0c3");
 	// no motion blur
-	// write_bytes(app_pid, NO_ASLR(0x026a057b), "eb16");
+	write_bytes(app_pid, NO_ASLR(0x026a057b), "eb16");
 	// no Chromatic Aberration
-	// write_bytes(app_pid, NO_ASLR(0x0269faa8), "c783ac000000000000009090");
+	write_bytes(app_pid, NO_ASLR(0x0269faa8), "c783ac000000000000009090");
 	// Debug Camera
 	/*
 	write_bytes(app_pid, NO_ASLR(0x01972998), "7416");
@@ -1555,6 +1555,9 @@ void DoPatch_SOTC_100(pid_t app_pid, uint64_t text_base)
 {
 	write_bytes(app_pid, NO_ASLR(0x0042437f), "0f1f440000");
 	// write_bytes(app_pid, NO_ASLR(0x01390090), "31c0c3");
+	// 120Hz
+	if (g_isPatch120Hz)
+	{
 	write_bytes(app_pid, NO_ASLR(0x013900a0), "31c0c3");
 	write_bytes(app_pid, NO_ASLR(0x004959a4), "e9d7de4f01");
 	write_bytes(app_pid, NO_ASLR(0x01993880), "e85bc79fff");
@@ -1579,6 +1582,8 @@ void DoPatch_SOTC_100(pid_t app_pid, uint64_t text_base)
 	write_bytes(app_pid, NO_ASLR(0x019938c7), "4531c0");
 	write_bytes(app_pid, NO_ASLR(0x019938ca), "ffd0");
 	write_bytes(app_pid, NO_ASLR(0x019938cc), "e9d820b0fe");
+	printf_notification("Applied 120Hz Patch");
+	}		
 }
 
 void DoPatch_BigCollection(pid_t app_pid, uint64_t text_base, uint32_t idx)
